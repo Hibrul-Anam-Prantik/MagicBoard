@@ -49,5 +49,5 @@ print(f"Magician is active.")
 print(f"Hotkeys: {friendly_mod} + Option/Alt + [1-8]")
 print(f"Kill Switch: {friendly_mod} + Option/Alt + K")
 
-with pynput.keyboard.GlobalHotkeys(hotkeys) as h:
+with pynput.keyboard.GlobalHotKeys(hotkeys) as h:
     h.join()
