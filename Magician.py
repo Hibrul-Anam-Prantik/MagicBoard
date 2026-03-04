@@ -42,8 +42,13 @@ def make_handler(index):
                 print(content)
                 return
                 
+            # pyperclip.copy(content)
+            # print(f"Copied clip {index} to clipboard. Hotkey: ctrl+alt+{index}")
             pyperclip.copy(content)
-            print(f"Copied clip {index} to clipboard. Hotkey: ctrl+alt+{index}")
+            # Add this line to automatically paste after copying
+            keyboard.write(content) 
+            
+            print(f"Pasted clip {index}. Hotkey: ctrl+alt+{index}")
         except Exception as e:
             print(f"Error copying clip {index}: {e}")
     return handler
