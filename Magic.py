@@ -6,14 +6,14 @@ import os
 
 # Define the file paths for the 8 clips
 CLIP_FILES = {
-    "1": "clip_1.txt",
-    "2": "clip_2.txt",
-    "3": "clip_3.txt",
-    "4": "clip_4.txt",
-    "5": "clip_5.txt",
-    "6": "clip_6.txt",
-    "7": "clip_7.txt",
-    "8": "clip_8.txt",
+    "1": "magic01.txt",
+    "2": "magic02.txt",
+    "3": "magic03.txt",
+    "4": "magic04.txt",
+    "5": "magic05.txt",
+    "6": "magic06.txt",
+    "7": "magic07.txt",
+    "8": "magic08.txt",
 }
 
 CLIPS = {}
