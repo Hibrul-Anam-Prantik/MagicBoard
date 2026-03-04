@@ -1,0 +1,248 @@
+import java.io.*;
+import java.util.*;
+
+public class Task02 {
+
+    static List<Integer>[] graph;
+    static int[] color;
+
+    public static void main(String[] args) throws Exception {
+        FastScanner fs = new FastScanner(System.in);
+        StringBuilder out = new StringBuilder();
+
+        int T = fs.nextInt();
+
+        while (T-- > 0) {
+            int n = fs.nextInt();
+            int m = fs.nextInt();
+
+            graph = new ArrayList[n + 1];
+            for (int i = 1; i <= n; i++) {
+                graph[i] = new ArrayList<>();
+            }
+
+            for (int i = 0; i < m; i++) {
+                int u = fs.nextInt();
+                int v = fs.nextInt();
+                graph[u].add(v);
+                graph[v].add(u);
+            }
+
+            color = new int[n + 1];
+            Arrays.fill(color, -1);
+
+            long answer = 0;
+
+            for (int i = 1; i <= n; i++) {
+                if (color[i] == -1) {
+                    answer += bfs(i);
+                }
+            }
+
+            out.append(answer).append('\n');
+        }
+
+        System.out.print(out.toString());
+    }
+
+    static int bfs(int start) {
+        Queue<Integer> queue = new ArrayDeque<>();
+        queue.add(start);
+        color[start] = 0;
+
+        int count0 = 1;
+        int count1 = 0;
+
+        while (!queue.isEmpty()) {
+            int u = queue.poll();
+
+            for (int v : graph[u]) {
+                if (color[v] == -1) {
+                    color[v] = 1 - color[u];
+                    if (color[v] == 0) count0++;
+                    else count1++;
+                    queue.add(v);
+                }
+            }
+        }
+
+        return Math.max(count0, count1);
+    }
+
+    static class FastScanner {
+        byte[] buffer = new byte[1 << 16];
+        int ptr = 0, len = 0;
+        InputStream in;
+
+        FastScanner(InputStream in) {
+            this.in = in;
+        }
+
+        int read() throws IOException {
+            if (ptr >= len) {
+                len = in.read(buffer);
+                ptr = 0;
+                if (len <= 0) return -1;
+            }
+            return buffer[ptr++];
+        }
+
+        int nextInt() throws IOException {
+            int c, sign = 1, val = 0;
+            do {
+                c = read();
+            } while (c <= ' ');
+
+            if (c == '-') {
+                sign = -1;
+                c = read();
+            }
+
+            while (c > ' ') {
+                val = val * 10 + (c - '0');
+                c = read();
+            }
+            return val * sign;
+        }
+    }
+}
+
+
+//702
+import java.io.*;
+import java.util.*;
+
+public class Task702 {
+
+    static class Edge {
+        int to;
+        int w;
+        Edge(int to, int w) {
+            this.to = to;
+            this.w = w;
+        }
+    }
+
+    static class State {
+        int node;
+        long dist;
+        State(int node, long dist) {
+            this.node = node;
+            this.dist = dist;
+        }
+    }
+
+    static final long INF = Long.MAX_VALUE / 4;
+
+    public static void main(String[] args) throws Exception {
+        FastScanner fs = new FastScanner(System.in);
+        StringBuilder out = new StringBuilder();
+
+        int TC = fs.nextInt();   // number of test cases (lab wrapper)
+
+        while (TC-- > 0) {
+
+            int N = fs.nextInt();
+            int M = fs.nextInt();
+            int S = fs.nextInt();
+            int T = fs.nextInt();
+
+            List<Edge>[] graph = new ArrayList[N + 1];
+            for (int i = 1; i <= N; i++) {
+                graph[i] = new ArrayList<>();
+            }
+
+            for (int i = 0; i < M; i++) {
+                int u = fs.nextInt();
+                int v = fs.nextInt();
+                int w = fs.nextInt();
+                graph[u].add(new Edge(v, w));
+            }
+
+            long[] da = dijkstra(N, graph, S);
+            long[] db = dijkstra(N, graph, T);
+
+            long bestTime = INF;
+            int bestNode = -1;
+
+            for (int v = 1; v <= N; v++) {
+                if (da[v] == INF || db[v] == INF) continue;
+
+                long meetTime = Math.max(da[v], db[v]);
+
+                if (meetTime < bestTime ||
+                        (meetTime == bestTime && v < bestNode)) {
+                    bestTime = meetTime;
+                    bestNode = v;
+                }
+            }
+
+            if (bestNode == -1) {
+                out.append("-1\n");
+            } else {
+                out.append(bestTime).append(" ").append(bestNode).append('\n');
+            }
+        }
+
+        System.out.print(out.toString());
+    }
+
+    static long[] dijkstra(int N, List<Edge>[] graph, int start) {
+        long[] dist = new long[N + 1];
+        Arrays.fill(dist, INF);
+
+        PriorityQueue<State> pq =
+                new PriorityQueue<>(Comparator.comparingLong(a -> a.dist));
+
+        dist[start] = 0;
+        pq.add(new State(start, 0));
+
+        while (!pq.isEmpty()) {
+            State cur = pq.poll();
+            int u = cur.node;
+
+            if (cur.dist != dist[u]) continue;
+
+            for (Edge e : graph[u]) {
+                long nd = dist[u] + e.w;
+                if (nd < dist[e.to]) {
+                    dist[e.to] = nd;
+                    pq.add(new State(e.to, nd));
+                }
+            }
+        }
+
+        return dist;
+    }
+
+    // -------- FAST INPUT (LAB SAFE) --------
+    static class FastScanner {
+        private final byte[] buffer = new byte[1 << 16];
+        private int ptr = 0, len = 0;
+        private final InputStream in;
+
+        FastScanner(InputStream in) {
+            this.in = in;
+        }
+
+        private int read() throws IOException {
+            if (ptr >= len) {
+                len = in.read(buffer);
+                ptr = 0;
+                if (len <= 0) return -1;
+            }
+            return buffer[ptr++];
+        }
+
+        int nextInt() throws IOException {
+            int c, sign = 1, val = 0;
+            do c = read(); while (c <= ' ');
+            if (c == '-') { sign = -1; c = read(); }
+            while (c > ' ') {
+                val = val * 10 + (c - '0');
+                c = read();
+            }
+            return val * sign;
+        }
+    }
+}

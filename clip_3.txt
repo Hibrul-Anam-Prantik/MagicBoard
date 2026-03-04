@@ -1,0 +1,219 @@
+import java.io.*;
+import java.util.*;
+
+public class Task03 {
+
+    static int N;
+    static int x1, y1, x2, y2;
+
+    static int[] dx = {2, 2, -2, -2, 1, 1, -1, -1};
+    static int[] dy = {1, -1, 1, -1, 2, -2, 2, -2};
+
+    public static void main(String[] args) throws Exception {
+        FastScanner fs = new FastScanner(System.in);
+        StringBuilder out = new StringBuilder();
+
+        int T = fs.nextInt();
+
+        while (T-- > 0) {
+            N = fs.nextInt();
+            x1 = fs.nextInt() - 1;
+            y1 = fs.nextInt() - 1;
+            x2 = fs.nextInt() - 1;
+            y2 = fs.nextInt() - 1;
+
+            out.append(bfs()).append('\n');
+        }
+
+        System.out.print(out.toString());
+    }
+
+    static int bfs() {
+        boolean[][] visited = new boolean[N][N];
+        Queue<int[]> queue = new ArrayDeque<>();
+
+        queue.add(new int[]{x1, y1, 0});
+        visited[x1][y1] = true;
+
+        while (!queue.isEmpty()) {
+            int[] cur = queue.poll();
+            int x = cur[0];
+            int y = cur[1];
+            int dist = cur[2];
+
+            if (x == x2 && y == y2) {
+                return dist;
+            }
+
+            for (int i = 0; i < 8; i++) {
+                int nx = x + dx[i];
+                int ny = y + dy[i];
+
+                if (inside(nx, ny) && !visited[nx][ny]) {
+                    visited[nx][ny] = true;
+                    queue.add(new int[]{nx, ny, dist + 1});
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    static boolean inside(int x, int y) {
+        return x >= 0 && x < N && y >= 0 && y < N;
+    }
+
+    static class FastScanner {
+        byte[] buffer = new byte[1 << 16];
+        int ptr = 0, len = 0;
+        InputStream in;
+
+        FastScanner(InputStream in) {
+            this.in = in;
+        }
+
+        int read() throws IOException {
+            if (ptr >= len) {
+                len = in.read(buffer);
+                ptr = 0;
+                if (len <= 0) return -1;
+            }
+            return buffer[ptr++];
+        }
+
+        int nextInt() throws IOException {
+            int c, sign = 1, val = 0;
+            do {
+                c = read();
+            } while (c <= ' ');
+
+            if (c == '-') {
+                sign = -1;
+                c = read();
+            }
+
+            while (c > ' ') {
+                val = val * 10 + (c - '0');
+                c = read();
+            }
+            return val * sign;
+        }
+    }
+}
+
+// 703
+import java.io.*;
+import java.util.*;
+
+public class Task703 {
+
+    static class Edge {
+        int to;
+        int w;
+        Edge(int to, int w) {
+            this.to = to;
+            this.w = w;
+        }
+    }
+
+    static class State {
+        int node;
+        int danger;
+        State(int node, int danger) {
+            this.node = node;
+            this.danger = danger;
+        }
+    }
+
+    static final int INF = Integer.MAX_VALUE;
+
+    public static void main(String[] args) throws Exception {
+        FastScanner fs = new FastScanner(System.in);
+        StringBuilder out = new StringBuilder();
+
+        int TC = fs.nextInt();   // number of test cases (lab wrapper)
+
+        while (TC-- > 0) {
+
+            int N = fs.nextInt();
+            int M = fs.nextInt();
+
+            List<Edge>[] graph = new ArrayList[N + 1];
+            for (int i = 1; i <= N; i++) {
+                graph[i] = new ArrayList<>();
+            }
+
+            for (int i = 0; i < M; i++) {
+                int u = fs.nextInt();
+                int v = fs.nextInt();
+                int w = fs.nextInt();
+                graph[u].add(new Edge(v, w));
+                graph[v].add(new Edge(u, w));
+            }
+
+            int[] dist = new int[N + 1];
+            Arrays.fill(dist, INF);
+            dist[1] = 0;
+
+            PriorityQueue<State> pq = new PriorityQueue<>(
+                    Comparator.comparingInt(a -> a.danger)
+            );
+            pq.add(new State(1, 0));
+
+            while (!pq.isEmpty()) {
+                State cur = pq.poll();
+                int u = cur.node;
+
+                if (cur.danger != dist[u]) continue;
+
+                for (Edge e : graph[u]) {
+                    int nd = Math.max(dist[u], e.w);
+                    if (nd < dist[e.to]) {
+                        dist[e.to] = nd;
+                        pq.add(new State(e.to, nd));
+                    }
+                }
+            }
+
+            for (int i = 1; i <= N; i++) {
+                if (dist[i] == INF) out.append(-1);
+                else out.append(dist[i]);
+                if (i < N) out.append(' ');
+            }
+            out.append('\n');
+        }
+
+        System.out.print(out.toString());
+    }
+
+    // -------- FAST INPUT (LAB SAFE) --------
+    static class FastScanner {
+        private final byte[] buffer = new byte[1 << 16];
+        private int ptr = 0, len = 0;
+        private final InputStream in;
+
+        FastScanner(InputStream in) {
+            this.in = in;
+        }
+
+        private int read() throws IOException {
+            if (ptr >= len) {
+                len = in.read(buffer);
+                ptr = 0;
+                if (len <= 0) return -1;
+            }
+            return buffer[ptr++];
+        }
+
+        int nextInt() throws IOException {
+            int c, sign = 1, val = 0;
+            do c = read(); while (c <= ' ');
+            if (c == '-') { sign = -1; c = read(); }
+            while (c > ' ') {
+                val = val * 10 + (c - '0');
+                c = read();
+            }
+            return val * sign;
+        }
+    }
+}
