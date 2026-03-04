@@ -28,14 +28,14 @@ Follow these steps to use MagicBoard correctly:
 ### Step 1: Prepare Your Snippets
 
 Open the folder and locate the files magic01.txt through magic08.txt. Open each one and paste the specific text or code you want to save. Save and close the files.
-+4
 
 ### Step 2: Launch the Program
 
-On Windows: Right-click launch.bat and select Run as Administrator. (This is necessary for the script to detect keys while you are in other apps).
-+2
+    On Windows: Right-click launch.bat and select Run as Administrator. (This is necessary for the script to detect keys while you are in other apps).
 
-On macOS: Open Terminal, cd into the folder, and run sh launch.sh.
+---
+
+    On macOS: Open Terminal, cd into the folder, and run sh launch.sh.
 
 ### Step 3: Trigger the Copy
 
@@ -46,7 +46,6 @@ Go to your target application (VS Code, SQL Workbench, Browser, etc.). Press the
     macOS: Command + Option + [1-8]
 
 Example: Pressing Ctrl+Alt+1 loads the text from magic01.txt into your clipboard.
-+2
 
 ### Step 4: Paste
 
