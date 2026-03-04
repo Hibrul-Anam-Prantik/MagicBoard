@@ -43,6 +43,8 @@ Go to your target application (VS Code, SQL Workbench, Browser, etc.). Press the
 
     Windows: Ctrl + Alt + [1-8]
 
+---
+
     macOS: Command + Option + [1-8]
 
 Example: Pressing Ctrl+Alt+1 loads the text from magic01.txt into your clipboard.
