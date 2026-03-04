@@ -21,49 +21,59 @@ pip install pynput pyperclip
 
 If "pip" is not recognized, try: python -m pip install pynput pyperclip
 
-📖 The Step-by-Step Process
+## 📖 Step-by-Step Process
+
 Follow these steps to use MagicBoard correctly:
 
-Step 1: Prepare Your Snippets
+### Step 1: Prepare Your Snippets
 
 Open the folder and locate the files magic01.txt through magic08.txt. Open each one and paste the specific text or code you want to save. Save and close the files.
 +4
 
-Step 2: Launch the Program
+### Step 2: Launch the Program
 
 On Windows: Right-click launch.bat and select Run as Administrator. (This is necessary for the script to detect keys while you are in other apps).
 +2
 
 On macOS: Open Terminal, cd into the folder, and run sh launch.sh.
 
-Step 3: Trigger the Copy
+### Step 3: Trigger the Copy
 
 Go to your target application (VS Code, SQL Workbench, Browser, etc.). Press the hotkey for the slot you want:
 
-Windows: Ctrl + Alt + [1-8]
+    Windows: Ctrl + Alt + [1-8]
 
-macOS: Command + Option + [1-8]
+    macOS: Command + Option + [1-8]
 
 Example: Pressing Ctrl+Alt+1 loads the text from magic01.txt into your clipboard.
 +2
 
-Step 4: Paste
+### Step 4: Paste
 
-Now simply press the standard paste shortcut (Ctrl+V or Cmd+V) to insert your text into the application.
+Now simply press the standard paste shortcut `(Ctrl+V or Cmd+V)` to insert your text into the application.
 
-Step 5: Close/Kill the Program
+### Step 5: Close/Kill the Program
 
 When you are finished, use the "Kill Switch" to stop the background process:
 
-Hotkey: Modifier + Alt/Option + K
+#### Windows Kill Switch:
 
-🖥️ Platform Specifics
-Windows Users
+    Ctrl + Alt + K (Stops the program immediately).
+
+#### macOS Kill Switch:
+
+    Command + Option + K (Or run pkill -f Magician.py in Terminal).
+
+---
+
+## 🖥️ Platform Specifics
+
+### Windows Users
 
 The script launches silently via run_silent.vbs. You will not see a black window; the program runs entirely in the background.
 +4
 
-macOS Users
+### macOS Users
 
 macOS requires explicit permission for MagicBoard to "listen" to your keyboard:
 
