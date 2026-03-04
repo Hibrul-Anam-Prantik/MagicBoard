@@ -1,6 +1,6 @@
 # 🧙‍♂️ MagicBoard
 
-\*_MagicBoard_ is a cross-platform, background-running utility that maps 8 local text files to global hotkeys. It allows for instant, silent copying of snippets, code, or templates without a visible terminal window.
+**MagicBoard** is a high-efficiency, cross-platform clipboard manager. It allows you to map 8 different text files to global hotkeys, enabling "silent" copying of code snippets, SQL queries, or templates without a visible terminal window.
 
 ---
 
@@ -8,13 +8,12 @@
 
 ### 1. Prerequisites
 
-Ensure [Python 3.x](https://www.python.org/) is installed.
+- **Python 3.x:** Download from [python.org](https://www.python.org/).
+- **Crucial Step:** During installation, check the box **"Add Python to PATH"**.
 
-> **Important:** During installation, check the box that says **"Add Python to PATH"**.
+### 2. Install Dependencies
 
-### 2. Install Libraries
-
-Open your terminal (Command Prompt, PowerShell, or Terminal.app) and run:
+Open your terminal (PowerShell on Windows or Terminal.app on Mac) and run:
 
 ```bash
 pip install pynput pyperclip
