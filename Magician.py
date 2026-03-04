@@ -1,65 +1,53 @@
-import keyboard
+import pynput
 import pyperclip
-import time
-import sys
 import os
+import sys
 
+# File mapping 
 CLIP_FILES = {
-    "1": "magic01.txt",
-    "2": "magic02.txt",
-    "3": "magic03.txt",
-    "4": "magic04.txt",
-    "5": "magic05.txt",
-    "6": "magic06.txt",
-    "7": "magic07.txt",
-    "8": "magic08.txt",
+    "1": "magic01.txt", "2": "magic02.txt", "3": "magic03.txt", "4": "magic04.txt",
+    "5": "magic05.txt", "6": "magic06.txt", "7": "magic07.txt", "8": "magic08.txt",
 }
 
 CLIPS = {}
 
 def load_clips():
-    """Reads the content from the text files into the CLIPS dictionary."""
-    print("Loading clips from external files...")
+    """Reads content from text files into memory """
+    base_path = os.path.dirname(os.path.abspath(__file__))
     for index, filename in CLIP_FILES.items():
-        try:
-            with open(filename, 'r', encoding='utf-8') as f:
+        full_path = os.path.join(base_path, filename)
+        if os.path.exists(full_path):
+            with open(full_path, 'r', encoding='utf-8') as f:
                 CLIPS[index] = f.read().strip()
-            print(f"  Successfully loaded clip {index} from {filename}")
-        except FileNotFoundError:
-            print(f"  ERROR: File not found for clip {index}: {filename}")
-            CLIPS[index] = f"ERROR: Content file not found ({filename})"
-        except Exception as e:
-            print(f"  ERROR loading clip {index} from {filename}: {e}")
-            CLIPS[index] = f"ERROR: Could not read content from file ({filename})"
+        else:
+            CLIPS[index] = f"Error: {filename} not found."
+
+def trigger_clip(index):
+    """Copies text to clipboard """
+    content = CLIPS.get(index, "")
+    if not content.startswith("Error:"):
+        pyperclip.copy(content)
+        print(f"Copied clip {index} to clipboard.")
+
+def kill_script():
+    """Stops the background process safely"""
+    print("Magician shutting down...")
+    os._exit(0)
 
 load_clips()
 
-def make_handler(index):
-    def handler():
-        try:
-            content = CLIPS.get(index, "")
-            if content.startswith("ERROR"):
-                print(content)
-                return
-                
-            pyperclip.copy(content)
-            print(f"Copied clip {index} to clipboard. Hotkey: ctrl+alt+{index}")
-        except Exception as e:
-            print(f"Error copying clip {index}: {e}")
-    return handler
+# Setup Modifiers: 'cmd' for Mac, 'ctrl' for Windows
+mod = '<cmd>' if sys.platform == 'darwin' else '<ctrl>'
+friendly_mod = "Command" if sys.platform == 'darwin' else "Ctrl"
 
-print("Clipboard Hotkey Service is starting. Press CTRL+C to stop.")
+# Build hotkey dictionary
+hotkeys = {f'{mod}+<alt>+{i}': lambda i=i: trigger_clip(i) for i in CLIPS.keys()}
+# Add the Kill Switch (Mod + Alt + K)
+hotkeys[f'{mod}+<alt>+k'] = kill_script
 
-for i in CLIPS.keys():
-    hotkey_combo = f"ctrl+alt+{i}"
-    keyboard.add_hotkey(hotkey_combo, make_handler(i))
-    print(f"Registered hotkey: {hotkey_combo}")
+print(f"Magician is active.")
+print(f"Hotkeys: {friendly_mod} + Option/Alt + [1-8]")
+print(f"Kill Switch: {friendly_mod} + Option/Alt + K")
 
-try:
-    keyboard.wait()
-except KeyboardInterrupt:
-    print("Service stopped by user.")
-    sys.exit(0)
-except Exception as e:
-    print(f"An unexpected error occurred: {e}")
-    sys.exit(1)
+with pynput.keyboard.GlobalHotkeys(hotkeys) as h:
+    h.join()
