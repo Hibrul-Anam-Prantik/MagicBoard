@@ -1,3 +1,3 @@
 Set WshShell = CreateObject("WScript.Shell")
-' Launch Python without showing a window 
+' Ensure the filename matches your Python file exactly
 WshShell.Run "python Magician.py", 0, False

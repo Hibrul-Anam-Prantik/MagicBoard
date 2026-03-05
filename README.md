@@ -13,13 +13,10 @@
 
 ### 2. Install Dependencies
 
-Open your terminal (PowerShell on Windows or Terminal.app on Mac) and run:
+Open your terminal (PowerShell on Windows or Terminal.app on Mac) and run these commands to ensure your installer is up to date and your libraries are ready:
 
-```bash
-pip install pynput pyperclip
-```
-
-If "pip" is not recognized, try: python -m pip install pynput pyperclip
+    python -m pip install --upgrade pip
+    python -m pip install pynput pyperclip
 
 ## 📖 Step-by-Step Process
 
@@ -81,3 +78,7 @@ macOS requires explicit permission for MagicBoard to "listen" to your keyboard:
 Go to: System Settings > Privacy & Security > Accessibility.
 
 Ensure Terminal (or Python) is toggled ON.
+
+```
+
+```
